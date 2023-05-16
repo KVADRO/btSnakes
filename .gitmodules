@@ -1,0 +1,3 @@
+[submodule "game/external/cocos2d-x"]
+	path = game/external/cocos2d-x
+	url = https://github.com/cocos2d/cocos2d-x.git
