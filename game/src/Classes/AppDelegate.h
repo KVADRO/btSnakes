@@ -26,6 +26,11 @@
 #define  _APP_DELEGATE_H_
 
 #include "cocos2d.h"
+#include "Config.h"
+
+#ifdef USE_IMGUI
+#include <CCImGuiLayer.h>
+#endif
 
 /**
 @brief    The cocos2d Application.
@@ -58,6 +63,14 @@ public:
     @param  the pointer of the application
     */
     virtual void applicationWillEnterForeground();
+
+#ifdef USE_IMGUI
+private:
+    void initImGui();
+    
+private:
+    ImGuiLayer* m_ImGuiLayer{nullptr};
+#endif
 };
 
 #endif // _APP_DELEGATE_H_

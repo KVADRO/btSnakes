@@ -57,11 +57,18 @@ endif()
 # add cross-platforms source files and header files 
 list(APPEND GAME_SOURCE
      Classes/AppDelegate.cpp
-     Classes/HelloWorldScene.cpp
+     Classes/SceneManager.cpp
+     Classes/playground/SnakePrototypingScene.cpp
+     Classes/playground/AngleDetectionScene.cpp
+     Classes/playground/Common.cpp
      )
 list(APPEND GAME_HEADER
      Classes/AppDelegate.h
-     Classes/HelloWorldScene.h
+     Classes/Config.h
+     Classes/SceneManager.h
+     Classes/playground/SnakePrototypingScene.h
+     Classes/playground/AngleDetectionScene.h
+     Classes/playground/Common.h
      )
 
 if(ANDROID)
@@ -129,10 +136,13 @@ else()
     target_link_libraries(${APP_NAME} -Wl,--whole-archive cpp_android_spec -Wl,--no-whole-archive)
 endif()
 
-target_link_libraries(${APP_NAME} cocos2d)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../external/cocos2d-x-imgui ${ENGINE_BINARY_PATH}/imgui)
+
+target_link_libraries(${APP_NAME} cocos2d cc_imgui)
 target_include_directories(${APP_NAME}
         PRIVATE Classes
         PRIVATE ${COCOS2DX_ROOT_PATH}/cocos/audio/include/
+        PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../external/cocos2d-x-imgui
 )
 
 # mark app resources

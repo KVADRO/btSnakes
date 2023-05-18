@@ -32,4 +32,8 @@
 *.app
 
 .DS_Store
+
 game/src/build
+
+game/src/proj.android/.idea
+game/src/proj.android/app

@@ -23,7 +23,10 @@
  ****************************************************************************/
 
 #include "AppDelegate.h"
-#include "HelloWorldScene.h"
+#include "SceneManager.h"
+
+#include "playground/SnakePrototypingScene.h"
+#include "playground/AngleDetectionScene.h"
 
 // #define USE_AUDIO_ENGINE 1
 
@@ -33,7 +36,7 @@
 
 USING_NS_CC;
 
-static cocos2d::Size designResolutionSize = cocos2d::Size(480, 320);
+static cocos2d::Size designResolutionSize = cocos2d::Size(1024, 768); //(480, 320);
 static cocos2d::Size smallResolutionSize = cocos2d::Size(480, 320);
 static cocos2d::Size mediumResolutionSize = cocos2d::Size(1024, 768);
 static cocos2d::Size largeResolutionSize = cocos2d::Size(2048, 1536);
@@ -46,6 +49,14 @@ AppDelegate::~AppDelegate()
 {
 #if USE_AUDIO_ENGINE
     AudioEngine::end();
+#endif
+    
+#ifdef USE_IMGUI
+    if(m_ImGuiLayer)
+    {
+        m_ImGuiLayer->removeFromParent();
+        CC_SAFE_RELEASE_NULL(m_ImGuiLayer);
+    }
 #endif
 }
 
@@ -105,13 +116,18 @@ bool AppDelegate::applicationDidFinishLaunching() {
     }
 
     register_all_packages();
-
-    // create a scene. it's an autorelease object
-    auto scene = HelloWorld::createScene();
-
+    
+    GlobalRegistry& registry = GlobalRegistry::Instance();
+    registry.registerSceneFactory("AngleDetectionScene", AngleDetectionScene::create);
+    registry.registerSceneFactory("SnakePrototypingScene", SnakePrototypingScene::create);
+    
+#ifdef USE_IMGUI
+    initImGui();
+#endif
+    
     // run
-    director->runWithScene(scene);
-
+    director->runWithScene(registry.createScene<Scene>("SnakePrototypingScene"));
+    
     return true;
 }
 
@@ -132,3 +148,22 @@ void AppDelegate::applicationWillEnterForeground() {
     AudioEngine::resumeAll();
 #endif
 }
+
+#ifdef USE_IMGUI
+void AppDelegate::initImGui()
+{
+    m_ImGuiLayer = ImGuiLayer::create();
+    m_ImGuiLayer->retain();
+    
+    EventDispatcher* dispatcher = Director::getInstance()->getEventDispatcher();
+    dispatcher->addCustomEventListener(Director::EVENT_BEFORE_SET_NEXT_SCENE, [&](EventCustom*)
+    {
+        m_ImGuiLayer->removeFromParent();
+    });
+    
+    dispatcher->addCustomEventListener(Director::EVENT_AFTER_SET_NEXT_SCENE, [&](EventCustom*)
+    {
+        Director::getInstance()->getRunningScene()->addChild(m_ImGuiLayer);
+    });
+}
+#endif
