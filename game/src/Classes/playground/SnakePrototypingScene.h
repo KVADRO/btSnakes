@@ -1,61 +1,47 @@
 #pragma once
 
-#include "Config.h"
 #include "playground/Common.h"
 
 NS_CC_BEGIN
 
+#define SNAKE_BASE_HEADING Vec2::UNIT_Y
+
+/*
+ Goals:
+ - Implement snake movement mechanic
+ */
+
 struct SnakeNode
 {
-    Sprite* visual{nullptr};
-};
-
-struct Snake
-{
-public:
-    SnakeNode& pushNode()
+    Sprite* visual;
+    
+    void setHeading(float _angle360)
     {
-        m_Nodes.emplace_back();
-        
-        SnakeNode& node = m_Nodes.back();
-        node.visual = Sprite::create("circle_64x64.png");
-        
-        const Vec2 halfVisualSize = node.visual->getContentSize() * 0.5f;
-        
-        DrawNode* debugView = DrawNode::create();
-        debugView->drawLine(halfVisualSize, halfVisualSize + GetBaseHeading() * halfVisualSize.y * 1.3f, Color4F::GREEN);
-        node.visual->addChild(debugView);
-
-        return node;
+        visual->setRotation(fmodf(_angle360, 360.0f));
     }
     
-    std::vector<SnakeNode>& getAllNodes() { return m_Nodes; }
-    
-    Vec2 getHeading() const
+    void setHeading(const Vec2& _heading)
     {
-        Vec2 result = common::RotateVector(GetBaseHeading(), m_Nodes[0].visual->getRotation());
+        visual->setRotation(common::Get360Angle(SNAKE_BASE_HEADING, _heading));
+    }
+    
+    Vec2 getHeadingDirection() const
+    {
+        Vec2 result = common::RotateVector(SNAKE_BASE_HEADING, visual->getRotation());
         result.normalize();
         
         return result;
     }
     
-    void setHeading(float _heading)
+    float getHeadingAngle() const
     {
-        m_Nodes[0].visual->setRotation(_heading);
+        return visual->getRotation();
     }
-    
-    void setHeading(const Vec2& _heading)
-    {
-        m_Nodes[0].visual->setRotation(common::Get360Angle(GetBaseHeading(), _heading));
-    }
-    
-    static const cocos2d::Vec2 GetBaseHeading()
-    {
-        return cocos2d::Vec2::UNIT_Y;
-    }
-    
-private:
-    std::vector<SnakeNode> m_Nodes;
+};
+
+struct Snake
+{
+    std::vector<SnakeNode> nodes;
 };
 
 class SnakePrototypingScene : public Scene
@@ -64,24 +50,21 @@ class SnakePrototypingScene : public Scene
     
     struct DragInfo
     {
-        Vec2 heading;
-        Vec2 mousePos;
+        Vec2 touchPosition;
+        int eventID{-1};
         
-        int touchID{-1};
-        
-        void activate(int _touchID)
+        void activate(int _eventID)
         {
-            touchID = _touchID;
+            eventID = _eventID;
         }
         
         void deactivate()
         {
-            mousePos = Vec2::ZERO;
-            heading = Vec2::ZERO;
-            touchID = -1;
+            touchPosition = Vec2::ZERO;
+            eventID = -1;
         }
         
-        bool isActive() const { return touchID != -1; }
+        bool isActive() const { return eventID != -1; }
     };
     
 public:
@@ -91,6 +74,8 @@ private:
     bool init() override;
     void update(float _delta) override;
     
+    void applyAngularDisplacement(const Vec2& _targetHeading, SnakeNode& _node, float _delta);
+    
 private:
     DragInfo m_DragInfo;
     Snake m_Snake;
@@ -98,9 +83,9 @@ private:
     EventListenerTouchOneByOne* m_TouchListener{nullptr};
     DrawNode* m_DebugOverlay{nullptr};
     
-    const float BaseMovementSpeed = 70.0f;
-    const float BaseRotationSpeed = 50.0f;
-    const float BaseNodesOffset = 10.0f;
+    const float SnakeMovementVelocity = 70.0f;
+    const float SnakeAngularVelocity = 50.0f;
+    const float SnakeNodesOffset = 10.0f;
     
 public:
     CREATE_FUNC(SnakePrototypingScene)
