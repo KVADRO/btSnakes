@@ -1,0 +1,6 @@
+[submodule "game/external/cocos2d-x"]
+	path = game/external/cocos2d-x
+	url = https://github.com/cocos2d/cocos2d-x.git
+[submodule "game/external/cocos2d-x-imgui"]
+	path = game/external/cocos2d-x-imgui
+	url = https://github.com/Xrysnow/cocos2d-x-imgui.git
