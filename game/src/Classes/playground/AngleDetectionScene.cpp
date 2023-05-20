@@ -1,10 +1,8 @@
 #include "AngleDetectionScene.h"
 
-#ifdef USE_IMGUI
-#include <CCIMGUI.h>
-#endif
-
 using namespace cocos2d;
+
+const std::string AngleDetectionScene::SCENE_NAME = "AngleDetectionScene";
 
 AngleDetectionScene::~AngleDetectionScene()
 {

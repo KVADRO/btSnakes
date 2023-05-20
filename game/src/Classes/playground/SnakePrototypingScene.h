@@ -68,6 +68,9 @@ class SnakePrototypingScene : public Scene
     };
     
 public:
+    static const std::string SCENE_NAME;
+    
+public:
     ~SnakePrototypingScene();
     
 private:
@@ -88,7 +91,7 @@ private:
     const float SnakeNodesOffset = 10.0f;
     
 public:
-    CREATE_FUNC(SnakePrototypingScene)
+    VARIADIC_CREATE_FUNC(SnakePrototypingScene)
 };
 
 NS_CC_END

@@ -2,6 +2,8 @@
 
 using namespace cocos2d;
 
+const std::string SnakePrototypingScene::SCENE_NAME = "SnakePrototypingScene";
+
 SnakePrototypingScene::~SnakePrototypingScene()
 {
     if(m_TouchListener)

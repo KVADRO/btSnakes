@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Common.h"
+#include "playground/Common.h"
 
 NS_CC_BEGIN
 
@@ -14,6 +14,9 @@ NS_CC_BEGIN
 class AngleDetectionScene : public Scene
 {
     using Parent_t = Scene;
+    
+public:
+    static const std::string SCENE_NAME;
     
 public:
     ~AngleDetectionScene();
@@ -34,7 +37,7 @@ private:
     Vec2 m_TargetingVec;
     
 public:
-    CREATE_FUNC(AngleDetectionScene)
+    VARIADIC_CREATE_FUNC(AngleDetectionScene)
 };
 
 NS_CC_END

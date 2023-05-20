@@ -23,10 +23,11 @@
  ****************************************************************************/
 
 #include "AppDelegate.h"
-#include "SceneManager.h"
+
+#include "management/ManagerRegistry.h"
+#include "management/SceneManager.h"
 
 #include "playground/SnakePrototypingScene.h"
-#include "playground/AngleDetectionScene.h"
 
 // #define USE_AUDIO_ENGINE 1
 
@@ -50,6 +51,8 @@ AppDelegate::~AppDelegate()
 #if USE_AUDIO_ENGINE
     AudioEngine::end();
 #endif
+    
+    ManagerRegistry::Instance().shutdown();
     
 #ifdef USE_IMGUI
     if(m_ImGuiLayer)
@@ -117,17 +120,15 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     register_all_packages();
     
-    GlobalRegistry& registry = GlobalRegistry::Instance();
-    registry.registerSceneFactory("AngleDetectionScene", AngleDetectionScene::create);
-    registry.registerSceneFactory("SnakePrototypingScene", SnakePrototypingScene::create);
-    
 #ifdef USE_IMGUI
     initImGui();
 #endif
     
-    // run
-    director->runWithScene(registry.createScene<Scene>("SnakePrototypingScene"));
+    Director::getInstance()->getEventDispatcher()->addCustomEventListener(Director::EVENT_BEFORE_UPDATE, [](EventCustom* _event) {
+        ManagerRegistry::Instance().update(Director::getInstance()->getSecondsPerFrame());
+    });
     
+    SCENE_MANAGER.openScene<SnakePrototypingScene>();
     return true;
 }
 
