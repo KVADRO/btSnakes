@@ -1,4 +1,4 @@
-#include "ManagerRegistry.h" //#TODO: Full path
+#include "management/ManagerRegistry.h"
 
 using namespace cocos2d;
 

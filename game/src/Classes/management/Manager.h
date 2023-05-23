@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Config.h"
+#include "Common.h"
 
 NS_CC_BEGIN
 

@@ -2,6 +2,9 @@
 
 #include "playground/SnakePrototypingScene.h"
 #include "playground/AngleDetectionScene.h"
+#include "playground/CameraPlaygroundScene.h"
+
+#include "game/GameScene.h"
 
 using namespace cocos2d;
 
@@ -11,8 +14,13 @@ bool SceneManager::init()
 {
 #define CREATE_WRAPPER(SCENE) []() -> Scene* { return SCENE::create(); }
     
+    // Playground
     m_Factory[AngleDetectionScene::SCENE_NAME] = CREATE_WRAPPER(AngleDetectionScene);
     m_Factory[SnakePrototypingScene::SCENE_NAME] = CREATE_WRAPPER(SnakePrototypingScene);
+    m_Factory[CameraPlaygroundScene::SCENE_NAME] = CREATE_WRAPPER(CameraPlaygroundScene);
+    
+    // Game
+    m_Factory[GameScene::SCENE_NAME] = CREATE_WRAPPER(GameScene);
     
 #undef CREATE_WRAPPER
 }

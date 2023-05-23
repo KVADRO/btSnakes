@@ -1,4 +1,4 @@
-#include "AngleDetectionScene.h"
+#include "playground/AngleDetectionScene.h"
 
 using namespace cocos2d;
 
@@ -41,20 +41,19 @@ bool AngleDetectionScene::init()
         {
             ImGui::Text("Mouse displacement vec: %f / %f", mouseDisplacement.x, mouseDisplacement.y);
             
-            const float mouseDisplacementAngle = common::Get360Angle(BaseHeading, mouseDisplacement);
+            const float mouseDisplacementAngle = playground_common::Get360Angle(BaseHeading, mouseDisplacement);
             ImGui::Text("Mouse displacement angle: %f", mouseDisplacementAngle);
             
-            const Vec2 mouseDisplacementFromAngle = common::RotateVector(BaseHeading * mouseDisplacement.length(), mouseDisplacementAngle);
+            const Vec2 mouseDisplacementFromAngle = playground_common::RotateVector(BaseHeading * mouseDisplacement.length(), mouseDisplacementAngle);
             ImGui::Text("Mouse displacement vec from angle: %f / %f", mouseDisplacementFromAngle.x, mouseDisplacementFromAngle.y);
         }
         
         if(ImGui::CollapsingHeader("Targeting"))
         {
-            const float targetingDelta = common::GetShortestAngle(m_TargetingVec, mouseDisplacement);
+            const float targetingDelta = playground_common::GetShortestAngle(m_TargetingVec, mouseDisplacement);
             ImGui::Text("Targeting delta: %f", targetingDelta);
         }
-        
-    }, "AngleDetectionScene");
+    }, SCENE_NAME);
 #endif
     
     scheduleUpdate();
@@ -63,8 +62,10 @@ bool AngleDetectionScene::init()
 
 void AngleDetectionScene::cleanup()
 {
+    Parent_t::cleanup();
+    
 #ifdef USE_IMGUI
-    CCIMGUI::getInstance()->removeCallback("AngleDetectionScene");
+    CCIMGUI::getInstance()->removeCallback(SCENE_NAME);
 #endif
 }
 
@@ -75,7 +76,7 @@ void AngleDetectionScene::update(float _delta)
     const Vec2 viewCenter = Director::getInstance()->getOpenGLView()->getVisibleSize() * 0.5f;
     const Vec2 mouseHeading = m_MousePos - viewCenter;
     
-    const float targetingDelta = common::GetShortestAngle(m_TargetingVec, mouseHeading);
+    const float targetingDelta = playground_common::GetShortestAngle(m_TargetingVec, mouseHeading);
     const float targetingDeltaAbs = std::abs(targetingDelta);
     
     if(targetingDeltaAbs > FLOATING_POINT_TOLLERANCE)
@@ -91,7 +92,7 @@ void AngleDetectionScene::update(float _delta)
             angularDisplacement *= -1.0f;
         }
         
-        m_TargetingVec = common::RotateVector(m_TargetingVec, angularDisplacement);
+        m_TargetingVec = playground_common::RotateVector(m_TargetingVec, angularDisplacement);
         m_TargetingVec.normalize();
     }
     

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "playground/Common.h"
+#include "playground/PlaygroundCommon.h"
 
 NS_CC_BEGIN
 
@@ -22,12 +22,12 @@ struct SnakeNode
     
     void setHeading(const Vec2& _heading)
     {
-        visual->setRotation(common::Get360Angle(SNAKE_BASE_HEADING, _heading));
+        visual->setRotation(playground_common::Get360Angle(SNAKE_BASE_HEADING, _heading));
     }
     
     Vec2 getHeadingDirection() const
     {
-        Vec2 result = common::RotateVector(SNAKE_BASE_HEADING, visual->getRotation());
+        Vec2 result = playground_common::RotateVector(SNAKE_BASE_HEADING, visual->getRotation());
         result.normalize();
         
         return result;
@@ -88,7 +88,7 @@ private:
     
     const float SnakeMovementVelocity = 70.0f;
     const float SnakeAngularVelocity = 50.0f;
-    const float SnakeNodesOffset = 10.0f;
+    const float SnakeNodesOffset = 30.0f;
     
 public:
     VARIADIC_CREATE_FUNC(SnakePrototypingScene)

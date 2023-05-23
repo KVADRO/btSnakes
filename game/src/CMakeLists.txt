@@ -57,10 +57,16 @@ endif()
 # add cross-platforms source files and header files 
 list(APPEND GAME_SOURCE
      Classes/AppDelegate.cpp
+     Classes/Common.cpp
+
+     Classes/game/GameScene.cpp
+     Classes/game/Snake.cpp
+     Classes/game/Config.cpp
 
      Classes/playground/SnakePrototypingScene.cpp
      Classes/playground/AngleDetectionScene.cpp
-     Classes/playground/Common.cpp
+     Classes/playground/PlaygroundCommon.cpp
+     Classes/playground/CameraPlaygroundScene.cpp
 
      Classes/management/ManagerRegistry.cpp
      Classes/management/Manager.cpp
@@ -68,11 +74,16 @@ list(APPEND GAME_SOURCE
      )
 list(APPEND GAME_HEADER
      Classes/AppDelegate.h
-     Classes/Config.h
+     Classes/Common.h
+
+     Classes/game/GameScene.h
+     Classes/game/Snake.h
+     Classes/game/Config.h
 
      Classes/playground/SnakePrototypingScene.h
      Classes/playground/AngleDetectionScene.h
-     Classes/playground/Common.h
+     Classes/playground/PlaygroundCommon.h
+     Classes/playground/CameraPlaygroundScene.h
 
      Classes/management/ManagerRegistry.h
      Classes/management/Manager.h

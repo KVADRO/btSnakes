@@ -1,4 +1,4 @@
-#include "SnakePrototypingScene.h"
+#include "playground/SnakePrototypingScene.h"
 
 using namespace cocos2d;
 
@@ -44,10 +44,12 @@ bool SnakePrototypingScene::init()
     const Vec2 buildDirection = head.getHeadingDirection() * -1.0f;
     
     Vec2 position = screenCenter;
-    for(SnakeNode& node : m_Snake.nodes)
+    for(int i = 0; i < m_Snake.nodes.size(); ++i)
     {
+        SnakeNode& node = m_Snake.nodes[i];
+        
         node.visual->setPosition(position);
-        position += buildDirection * (node.visual->getContentSize().height + SnakeNodesOffset);
+        position += buildDirection * (node.visual->getContentSize().height + SnakeNodesOffset * i);
     }
     
     m_TouchListener = EventListenerTouchOneByOne::create();
@@ -147,7 +149,7 @@ void SnakePrototypingScene::applyAngularDisplacement(const Vec2& _targetHeading,
     const Vec2 viewSize = Director::getInstance()->getOpenGLView()->getVisibleSize();
     const Vec2 viewSizeHalf = viewSize * 0.5f;
     
-    const float targetingDelta = common::GetShortestAngle(_node.getHeadingDirection(), _targetHeading);
+    const float targetingDelta = playground_common::GetShortestAngle(_node.getHeadingDirection(), _targetHeading);
     const float targetingDeltaAbs = std::abs(targetingDelta);
     
     if(targetingDeltaAbs > FLOATING_POINT_TOLLERANCE)

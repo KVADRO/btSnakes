@@ -27,7 +27,7 @@
 #include "management/ManagerRegistry.h"
 #include "management/SceneManager.h"
 
-#include "playground/SnakePrototypingScene.h"
+#include "playground/CameraPlaygroundScene.h"
 
 // #define USE_AUDIO_ENGINE 1
 
@@ -128,7 +128,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
         ManagerRegistry::Instance().update(Director::getInstance()->getSecondsPerFrame());
     });
     
-    SCENE_MANAGER.openScene<SnakePrototypingScene>();
+    SCENE_MANAGER.openScene<CameraPlaygroundScene>();
     return true;
 }
 

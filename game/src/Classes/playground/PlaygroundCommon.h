@@ -1,10 +1,12 @@
 #pragma once
 
-#include "Config.h"
+#include "Common.h"
 
 NS_CC_BEGIN
 
-namespace common
+// Playground should have almost nothing in common with rest of the game!
+
+namespace playground_common
 {
     //#TODO: Return shortest angle between two vectors. CW - positive, CCW - negative [0-180]
     extern float GetShortestAngle(const Vec2& _v1, const Vec2& _v2);

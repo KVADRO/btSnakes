@@ -25,11 +25,7 @@
 #ifndef  _APP_DELEGATE_H_
 #define  _APP_DELEGATE_H_
 
-#include "Config.h"
-
-#ifdef USE_IMGUI
-#include <CCImGuiLayer.h>
-#endif
+#include "Common.h"
 
 /**
 @brief    The cocos2d Application.
